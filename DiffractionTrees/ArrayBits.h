@@ -1,9 +1,8 @@
 #pragma once
-#include "Lib.h"
-#include <boost/scoped_ptr.hpp>
+#include "Bit.h"
 class ArrayBits
 {
-	//boost::scoped_ptr<Bit> p1(new *Bit(6));
+	Bit bit;
 public:
 	ArrayBits();
 	~ArrayBits();
