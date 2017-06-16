@@ -19,6 +19,7 @@ Node::Node(int depth, int h)
 			else{
 				produser[i] = 1;
 				consumer[i] = 1;
+				
 			}
 		}
 		if (depth < (h-1))
@@ -28,7 +29,7 @@ Node::Node(int depth, int h)
 		}
 		else
 		{
-			left = nullptr;
+			left =  nullptr;
 			right = nullptr;
 		}
 }
@@ -47,8 +48,14 @@ void Node::levelOrderPrint(Node *root) {
 	while (!q.empty()) // пока очередь не пуста
 	{
 		Node* temp = q.front(); // Берем первый элемент в очереди
+		if (temp->left == nullptr || temp->right == nullptr)
+		{
+			temp->index = l;
+			l++;
+		}
+		else
 		temp->index = i;
-
+		//cout << temp->index <<" " <<temp->level << endl;
 		q.pop();  // Удаляем первый элемент в очереди
 		if (temp->left != nullptr) {
 		   q.push(temp->left);  // Вставляем  в очередь левого потомка
@@ -64,7 +71,7 @@ void Node::levelOrderPrint(Node *root) {
 int Node::travelse(Node * root, int mod, int thread_id)
 {
 	Node *tmp = root;
-	while (tmp->right == nullptr || tmp->left== nullptr)
+	while (tmp->right != nullptr || tmp->left != nullptr)
 	{
 		if (mod == 0)
 		{
@@ -81,7 +88,7 @@ int Node::travelse(Node * root, int mod, int thread_id)
 		}
 		else
 		{
-			if (mod == 0)
+			if (mod == 1)
 			{
 				if (consumer[thread_id % 4] == 0)
 				{

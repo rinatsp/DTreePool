@@ -19,7 +19,7 @@ class PoolDT
 public:
 	void test();
 	void push(int data, int  thread_id);
-	void pop();
+	void pop(int  thread_id);
 	PoolDT();
 	PoolDT(int depth,int thread_c, int h);
 	~PoolDT();
