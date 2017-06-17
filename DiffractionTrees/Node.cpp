@@ -1,6 +1,6 @@
 #include "Node.h"
 
-
+//thread_local int produser[4], consumer[4];
 
 Node::Node()
 {
@@ -75,29 +75,35 @@ int Node::travelse(Node * root, int mod, int thread_id)
 	{
 		if (mod == 0)
 		{
-			if (produser[thread_id % 4] == 0)
+			if (tmp->produser[thread_id % 4] == 0)
 			{
-				produser[thread_id % 4].fetch_xor(1);
+				tmp->produser[thread_id % 4].fetch_xor(1);
+				//produser[thread_id % 4] = 1;
 				tmp = tmp->right;
+				//cout << produser[thread_id % 4] << endl;
 			}
 			else
 			{
-				produser[thread_id % 4].fetch_xor(1);
+				tmp->produser[thread_id % 4].fetch_xor(1);
+				//produser[thread_id % 4] = 0;
 				tmp = tmp->left;
+				//cout << produser[thread_id % 4] << endl;
 			}
 		}
 		else
 		{
 			if (mod == 1)
 			{
-				if (consumer[thread_id % 4] == 0)
+				if (tmp->consumer[thread_id % 4] == 0)
 				{
-					consumer[thread_id % 4].fetch_xor(1);
+					tmp->consumer[thread_id % 4].fetch_xor(1);
+					//consumer[thread_id % 4] = 1;
 					tmp = tmp->right;
 				}
 				else
 				{
-					consumer[thread_id % 4].fetch_xor(1);
+					tmp->consumer[thread_id % 4].fetch_xor(1);
+					//consumer[thread_id % 4] = 0;
 					tmp = tmp->left;
 				}
 			}
@@ -106,7 +112,29 @@ int Node::travelse(Node * root, int mod, int thread_id)
 	return tmp->index;
 }
 
+#define COUNT 10
+void Node::print2DUtil(Node *root, int space)
+{
+	// Base case
+	if (root == nullptr)
+		return;
 
+	// Increase distance between levels
+	space += COUNT;
+
+	// Process right child first
+	print2DUtil(root->right, space);
+
+	// Print current node after space
+	// count
+	printf("\n");
+	for (int i = COUNT; i < space; i++)
+		printf(" ");
+	printf("%d\n", root->index);
+
+	// Process left child
+	print2DUtil(root->left, space);
+}
 
 Node::~Node()
 {

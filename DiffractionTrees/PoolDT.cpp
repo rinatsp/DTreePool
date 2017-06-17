@@ -12,7 +12,7 @@ void PoolDT::test()
 				{
 					thread_aff_mg.set_core();
 				}
-				for (int j = 0; j < 10000000; j++)
+				for (int j = 0; j < 10000000 / thread_count; j++)
 					push(5, i);
 			}
 			else {
@@ -20,7 +20,7 @@ void PoolDT::test()
 				{
 					thread_aff_mg.set_core();
 				}
-				for (int j = 0; j < 10000000; j++)
+				for (int j = 0; j < 10000000 / thread_count; j++)
 					pop(i);
 			}
 		}));
@@ -36,6 +36,7 @@ void PoolDT::push(int data,int  thread_id)
 {
 	int index_queue = tree->travelse(tree, 0, thread_id);
 	queue[index_queue].queue.push(data);
+	//cout << index_queue << " push" << endl;
 }
 
 void PoolDT::pop(int  thread_id)
@@ -43,6 +44,7 @@ void PoolDT::pop(int  thread_id)
 	int dt = 5;
 	int index_queue = tree->travelse(tree, 1, thread_id);
 	queue[index_queue].queue.pop(dt);
+	//cout << index_queue << " pop" << endl;
 }
 
 PoolDT::PoolDT()
@@ -58,7 +60,7 @@ PoolDT::PoolDT(int depth, int thread_c, int h)
 	queue = new queue_lf[count_queue];
 	
 	tree->levelOrderPrint(tree);
-
+	//tree->print2DUtil(tree,0); // вывод дерева на экран
 }
 
 

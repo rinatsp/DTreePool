@@ -4,7 +4,7 @@
 
 int main()
 {
-	PoolDT poll(0, 150, 3);	
+	PoolDT poll(0,1, 3);	
 
 
 
