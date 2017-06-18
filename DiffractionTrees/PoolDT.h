@@ -8,9 +8,9 @@
 class PoolDT
 {
 	int thread_count;
-	int count_queue = 0;
+	int count_queue;
 	int h_tree;
-	atomic_int produser_count = 0 , consumer_count = 0;
+	atomic_int produser_count =0 , consumer_count =0;
 	Node *tree;
 	ThreadAffinity thread_aff_mg;
 	std::vector<std::thread> workers;

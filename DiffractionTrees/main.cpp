@@ -8,7 +8,7 @@ int main()
 	int dt;
 	cout << "¬ведите кол-во потоков" << endl;
 	cin >> dt;
-	PoolDT poll(0,dt, 3);	
+	PoolDT poll(0,dt, 4);	
 
 	//boost::lockfree::queue<int, boost::lockfree::capacity<false>> q;
 	rigtorp::MPMCQueue<int> q(400000);

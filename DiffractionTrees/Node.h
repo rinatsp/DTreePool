@@ -7,7 +7,7 @@ private:
 	int level, index;
 	Node *left;
 	Node *right;
-	//atomic_int produser[4], consumer[4];
+	atomic_int produser[4], consumer[4];
 	
 public:
 	Node();

@@ -147,7 +147,7 @@ namespace rigtorp {
 		}
 		constexpr size_t turn(size_t i) const noexcept { return i / capacity_; }
 
-		static constexpr size_t kCacheLineSize = 512;
+		static constexpr size_t kCacheLineSize = 64;
 
 		struct Slot {
 			~Slot() noexcept {

@@ -4,33 +4,38 @@
 
 void PoolDT::test()
 {
-	
-	for (int i = 0; i < thread_count; ++i)
+	if (thread_count > 1)
 	{
-		workers.push_back(std::thread([&, i]() {
-			if (i%2 == 0) {
-				if (thread_aff_mg.get_core_num() == -1)
-				{
-					thread_aff_mg.set_core();
+		for (int i = 0; i < thread_count; ++i)
+		{
+			workers.push_back(std::thread([&, i]() {
+				if (i % 2 == 0) {
+					if (thread_aff_mg.get_core_num() == -1)
+					{
+						thread_aff_mg.set_core();
+					}
+					for (int j = 0; j < 10000000 / thread_count; j++)
+						push(j, i);
 				}
-				for (int j = 0; j < 10000000 / thread_count; j++)
-					push(j, i);
-			}
-			else {
-				if (thread_aff_mg.get_core_num() == -1)
-				{
-					thread_aff_mg.set_core();
+				else {
+					if (thread_aff_mg.get_core_num() == -1)
+					{
+						thread_aff_mg.set_core();
+					}
+					for (int q = 0; q < 10000000 / thread_count; q++)
+						pop(q, i);
 				}
-				for (int j = 0; j < 10000000 / thread_count; j++)
-					pop(j,i);
-			}
-		}));
+			}));
+		}
+		std::for_each(workers.begin(), workers.end(), [](std::thread &t)
+		{
+			t.join();
+		});
 	}
-	std::for_each(workers.begin(), workers.end(), [](std::thread &t)
-	{
-		t.join();
-	});
-
+	else {
+		for (int j = 0; j < 100000; j++)
+			queue[0].push(j);
+	}
 }
 
 void PoolDT::push(int data,int  thread_id)
