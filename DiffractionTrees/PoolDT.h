@@ -3,13 +3,7 @@
 #include "Node.h"
 #include "ThreadAffinity.h"
 #include "Queue.h"
-const size_t D = 1000000;
-struct queue_lf {
-	//boost::lockfree::queue<int , boost::lockfree::capacity<false>> queue;
-	
-	rigtorp::MPMCQueue<int> qu(D);
-	
-};
+
 
 class PoolDT
 {
@@ -20,6 +14,7 @@ class PoolDT
 	Node *tree;
 	ThreadAffinity thread_aff_mg;
 	std::vector<std::thread> workers;
+	rigtorp::MPMCQueue<int> * queue;
 public:
 	
 	void test();

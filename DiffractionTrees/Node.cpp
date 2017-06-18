@@ -1,6 +1,6 @@
 #include "Node.h"
 
-//thread_local int produser[4], consumer[4];
+thread_local int produser[3][4], consumer[3][4];
 
 Node::Node()
 {
@@ -10,7 +10,7 @@ Node::Node(int depth, int h)
 {
 		int l = depth;
 		level = l;
-		for (int i = 0; i < 4; i++)
+		/*for (int i = 0; i < 4; i++)
 		{
 			if (i % 2 == 0) {
 				produser[i] = 0;
@@ -20,6 +20,18 @@ Node::Node(int depth, int h)
 				produser[i] = 1;
 				consumer[i] = 1;
 				
+			}
+		}*/
+
+		for (int i = 0; i < 4; i++)
+		{
+			if (i % 2 == 0) {
+				produser[level][i] = 0;
+				consumer[level][i] = 0;
+			}
+			else {
+				produser[level][i] = 1;
+				consumer[level][i] = 1;
 			}
 		}
 		if (depth < (h-1))
@@ -75,17 +87,17 @@ int Node::travelse(Node * root, int mod, int thread_id)
 	{
 		if (mod == 0)
 		{
-			if (tmp->produser[thread_id % 4] == 0)
+			if (produser[tmp->level][thread_id % 4]/*tmp->produser[thread_id % 4]*/ == 0)
 			{
-				tmp->produser[thread_id % 4].fetch_xor(1);
-				//produser[thread_id % 4] = 1;
+				//tmp->produser[thread_id % 4].fetch_xor(1);
+				produser[tmp->level][thread_id % 4] = 1;
 				tmp = tmp->right;
-				//cout << produser[thread_id % 4] << endl;
+				//cout << produser[tmp->level][thread_id % 4] << endl;
 			}
 			else
 			{
-				tmp->produser[thread_id % 4].fetch_xor(1);
-				//produser[thread_id % 4] = 0;
+				//tmp->produser[thread_id % 4].fetch_xor(1);
+				produser[tmp->level][thread_id % 4] = 0;
 				tmp = tmp->left;
 				//cout << produser[thread_id % 4] << endl;
 			}
@@ -94,16 +106,16 @@ int Node::travelse(Node * root, int mod, int thread_id)
 		{
 			if (mod == 1)
 			{
-				if (tmp->consumer[thread_id % 4] == 0)
+				if (consumer[tmp->level][thread_id % 4]/*tmp->consumer[thread_id % 4]*/ == 0)
 				{
-					tmp->consumer[thread_id % 4].fetch_xor(1);
-					//consumer[thread_id % 4] = 1;
+					//tmp->consumer[thread_id % 4].fetch_xor(1);
+					consumer[tmp->level][thread_id % 4] = 1;
 					tmp = tmp->right;
 				}
 				else
 				{
-					tmp->consumer[thread_id % 4].fetch_xor(1);
-					//consumer[thread_id % 4] = 0;
+					//tmp->consumer[thread_id % 4].fetch_xor(1);
+					consumer[tmp->level][thread_id % 4] = 0;
 					tmp = tmp->left;
 				}
 			}

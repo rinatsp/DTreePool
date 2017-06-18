@@ -36,14 +36,14 @@ void PoolDT::test()
 void PoolDT::push(int data,int  thread_id)
 {
 	int index_queue = tree->travelse(tree, 0, thread_id);
-	//q[index_queue].push(data);
+	queue[index_queue].push(data);
 	//cout << index_queue << " push" << endl;
 }
 
 void PoolDT::pop(int j,int  thread_id)
 {
 	int index_queue = tree->travelse(tree, 1, thread_id);
-	//q[index_queue].pop(j);
+	queue[index_queue].pop(j);
 	//queue[index_queue].queue.pop(j);
 	//cout << index_queue << " pop" << endl;
 }
@@ -59,12 +59,7 @@ PoolDT::PoolDT(int depth, int thread_c, int h)
 	h_tree = h;
 	tree = new Node(depth, h);
 	tree->levelOrderPrint(tree);
-
-	vector < rigtorp::MPMCQueue<int> > q;
-	for (int i = 0; i < count_queue; i++)
-	{
-		q.push_back(qu);
-	}
+	queue = new rigtorp::MPMCQueue<int>[count_queue];
 	//tree->print2DUtil(tree,0); // вывод дерева на экран
 }
 

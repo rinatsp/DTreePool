@@ -8,6 +8,7 @@
 namespace rigtorp {
 
 	template <typename T> class MPMCQueue {
+	const size_t default_capasity = 300000;
 	private:
 		static_assert(std::is_nothrow_copy_assignable<T>::value ||
 			std::is_nothrow_move_assignable<T>::value,
@@ -18,7 +19,7 @@ namespace rigtorp {
 
 	public:
 		explicit MPMCQueue(const size_t capacity)
-			: capacity_(capacity),
+			: capacity_(default_capasity),
 			slots_(capacity > 0 ? new Slot[capacity + 2 * kPadding] : nullptr),
 			head_(0), tail_(0) {
 			if (capacity_ < 1) {
@@ -30,6 +31,18 @@ namespace rigtorp {
 				kCacheLineSize);
 		}
 
+		explicit MPMCQueue()
+			: capacity_(default_capasity),
+			slots_(new Slot[default_capasity + 2 * kPadding]),
+			head_(0), tail_(0) {
+			if (default_capasity < 1) {
+				throw std::invalid_argument("default_capasity < 1");
+			}
+			assert(alignof(MPMCQueue<T>) >= kCacheLineSize);
+			assert(reinterpret_cast<char *>(&tail_) -
+				reinterpret_cast<char *>(&head_) >=
+				kCacheLineSize);
+		}
 		~MPMCQueue() { delete[] slots_; }
 
 		// non-copyable and non-movable
@@ -134,7 +147,7 @@ namespace rigtorp {
 		}
 		constexpr size_t turn(size_t i) const noexcept { return i / capacity_; }
 
-		static constexpr size_t kCacheLineSize = 128;
+		static constexpr size_t kCacheLineSize = 512;
 
 		struct Slot {
 			~Slot() noexcept {
