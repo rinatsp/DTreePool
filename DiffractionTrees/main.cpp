@@ -7,7 +7,8 @@ int main()
 	PoolDT poll(0,8, 3);	
 
 	//boost::lockfree::queue<int, boost::lockfree::capacity<false>> q;
-	//int dt = 5;
+	int dt = 5;
+	//rigtorp::MPMCQueue<int> q(10000000);
 	auto t1 = std::chrono::high_resolution_clock::now();
 	poll.test();
 	/*for (int i = 0; i < 10000000; i++)
