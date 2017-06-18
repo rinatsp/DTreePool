@@ -4,12 +4,16 @@
 
 int main()
 {
-	PoolDT poll(0,1, 3);	
+	PoolDT poll(0,16, 3);	
 
-
-
+	boost::lockfree::queue<int, boost::lockfree::capacity<false>> q;
+	int dt = 5;
 	auto t1 = std::chrono::high_resolution_clock::now();
-	poll.test();
+	//poll.test();
+	for (int i = 0; i < 10000000; i++)
+		q.push(5);
+	for (int i = 0; i < 10000000; i++)
+		q.pop(dt);
 	auto t2 = std::chrono::high_resolution_clock::now();
 	auto int_ms = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
 	std::chrono::duration<double, std::milli> fp_ms = t2 - t1;

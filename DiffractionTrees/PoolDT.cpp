@@ -7,7 +7,7 @@ void PoolDT::test()
 	for (int i = 0; i < thread_count; ++i)
 	{
 		workers.push_back(std::thread([&, i]() {
-			if (i < thread_count / 2) {
+			if (i%2 == 0) {
 				if (thread_aff_mg.get_core_num() == -1)
 				{
 					thread_aff_mg.set_core();
@@ -35,7 +35,8 @@ void PoolDT::test()
 void PoolDT::push(int data,int  thread_id)
 {
 	int index_queue = tree->travelse(tree, 0, thread_id);
-	queue[index_queue].queue.push(data);
+	//queue[index_queue].queue.push(data);
+	queue[index_queue].queue.enqueue(data);
 	//cout << index_queue << " push" << endl;
 }
 
@@ -43,7 +44,8 @@ void PoolDT::pop(int  thread_id)
 {
 	int dt = 5;
 	int index_queue = tree->travelse(tree, 1, thread_id);
-	queue[index_queue].queue.pop(dt);
+	//queue[index_queue].queue.pop(dt);
+	queue[index_queue].queue.dequeue(dt);
 	//cout << index_queue << " pop" << endl;
 }
 

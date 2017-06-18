@@ -2,8 +2,10 @@
 #include "Lib.h"
 #include "Node.h"
 #include "ThreadAffinity.h"
+#include "Queue.h"
 struct queue_lf {
-	boost::lockfree::queue<int , boost::lockfree::capacity<false>> queue;
+	//boost::lockfree::queue<int , boost::lockfree::capacity<false>> queue;
+	spsc_queue_t<int> queue;
 };
 
 class PoolDT
