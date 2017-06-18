@@ -12,7 +12,7 @@ void PoolDT::test()
 				{
 					thread_aff_mg.set_core();
 				}
-				for (int j = 0; j < 10000000 / thread_count; j++)
+				for (int j = 0; j < 1000/ thread_count; j++)
 					push(5, i);
 			}
 			else {
@@ -20,7 +20,7 @@ void PoolDT::test()
 				{
 					thread_aff_mg.set_core();
 				}
-				for (int j = 0; j < 10000000 / thread_count; j++)
+				for (int j = 0; j < 1000 / thread_count; j++)
 					pop(i);
 			}
 		}));
